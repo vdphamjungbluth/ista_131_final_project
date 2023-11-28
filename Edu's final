@@ -1,0 +1,91 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+def csv_2021():
+    
+    df=pd.read_csv("database_2_total_pop.csv", index_col=0,header=0)
+    languages=df.loc["LANGUAGE SPOKEN AT HOME AND ABILITY TO SPEAK ENGLISH":"MARITAL STATUS",:]
+    languages.loc["LANGUAGE SPOKEN AT HOME AND ABILITY TO SPEAK ENGLISH"]=["Total esti.", "Total margins", "NIS esti.", "NIS margins","Native OOS esti.", "Native OOS margins", "NOUS esti.", "NOUS margins"]
+        
+
+
+    return languages
+
+def csv_2016():
+    df=pd.read_csv("database_3.csv", index_col=0,header=0)
+    languages=df.loc["LANGUAGE SPOKEN AT HOME AND ABILITY TO SPEAK ENGLISH":"MARITAL STATUS",:]
+    
+    
+    return languages
+
+
+def plotting_1(df_1=csv_2016(), df_2=csv_2021()):
+    value_1=df_1.iloc[2:5,0:1].values
+    value_2=df_2.iloc[2:5,0:1].values
+    result=[]
+    result_1=[]
+    for i in range(len(value_1)):
+        for j in range(len(value_1[i])):
+         result.append(float(value_1[i][j].strip("%")))
+
+    for i in range(len(value_2)):
+        for j in range(len(value_2[i])):
+            result_1.append(float(value_2[i][j].strip("%")))
+    
+  
+    
+    plt.scatter(result, result)
+    plt.scatter(result_1,result_1)
+    m,b=np.polyfit(result, result, 1)
+    n,c=np.polyfit(result_1, result_1, 1)
+    plt.plot(result, m*np.array(result)+b, color="red", label=2016)
+    
+    plt.plot(result_1, n*np.array(result_1)+c,color="blue", label=2022)
+   
+    
+    plt.legend()
+    plt.show()
+
+#print(plotting_1())
+
+def plotting_2(df_1=csv_2016(), df_2=csv_2021()):
+    value_1=df_1.iloc[2:5,0:1].values
+    value_2=df_2.iloc[2:5,0:1].values
+    result=[]
+    result_1=[]
+    for i in range(len(value_1)):
+        for j in range(len(value_1[i])):
+         result.append(float(value_1[i][j].strip("%")))
+
+    for i in range(len(value_2)):
+        for j in range(len(value_2[i])):
+            result_1.append(float(value_2[i][j].strip("%")))
+
+    final_result=result+result_1
+    print(final_result)
+    labels=[""]
+    plt.pie(final_result)
+
+    plt.show()
+
+
+def plotting_3(df_1=csv_2016(), df_2=csv_2021()):
+    value_1=df_1.iloc[2:5,0:1].values
+    value_2=df_2.iloc[2:5,0:1].values
+    result=[]
+    result_1=[]
+    for i in range(len(value_1)):
+        for j in range(len(value_1[i])):
+         result.append(float(value_1[i][j].strip("%")))
+
+    for i in range(len(value_2)):
+        for j in range(len(value_2[i])):
+            result_1.append(float(value_2[i][j].strip("%")))
+    
+    plt.hist(result[0], color="red", label=2016)
+    
+    plt.hist(result_1[0], color="blue", label=2022)
+    plt.title("English Spoken Fluently from 2016 to 2022")
+    plt.legend()
+    plt.show()
